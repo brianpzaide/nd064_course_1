@@ -1,7 +1,10 @@
 import sqlite3
+import time
 
 from flask import Flask, jsonify, json, render_template, request, url_for, redirect, flash
 from werkzeug.exceptions import abort
+
+import logging
 
 # Function to get a database connection.
 # This function connects to database with the name `database.db`
@@ -36,13 +39,16 @@ def index():
 def post(post_id):
     post = get_post(post_id)
     if post is None:
+      app.logger.info("{}, A non-existing article is accessed and a 404 page is returned.".format(time.strftime("%d/%m/%Y, %H:%M:%S", time.localtime())))
       return render_template('404.html'), 404
     else:
+      app.logger.info('{}, Article "{}" retrieved!'.format(time.strftime("%d/%m/%Y, %H:%M:%S", time.localtime()), post[2]))
       return render_template('post.html', post=post)
 
 # Define the About Us page
 @app.route('/about')
 def about():
+    app.logger.info('{}, "About Us" page is retrieved!'.format(time.strftime("%d/%m/%Y, %H:%M:%S"), time.localtime()))
     return render_template('about.html')
 
 # Define the post creation functionality 
@@ -60,11 +66,27 @@ def create():
                          (title, content))
             connection.commit()
             connection.close()
-
+            app.logger.info('Article {}, "{}" created!'.format(time.strftime("%d/%m/%Y, %H:%M:%S", time.localtime()), title))
             return redirect(url_for('index'))
 
     return render_template('create.html')
 
+
+@app.route("/healtz")
+def healthcheck():
+  response = app.response_class(response=json.dumps({"result": "OK - healthy"}), status=200, mimetype="application/json")
+  return response
+
+@app.route("/metrics")
+def metrics():
+  connection = sqlite3.connect('database.db')
+  cur = connection.cursor()
+  n_posts = cur.execute("select count(*) from posts;").fetchone()
+  connection.close()
+  return app.response_class(response=json.dumps({"post_count" : n_posts[0], "db_connection_count": 1}), status=200, mimetype="application/json")
+
+
 # start the application on port 3111
 if __name__ == "__main__":
+   logging.basicConfig(format='%(levelname)s:%(name)s:%(message)s', datefmt=time.strftime("%d/%m/%Y, %H:%M:%S"), level=logging.DEBUG)
    app.run(host='0.0.0.0', port='3111')
