@@ -6,7 +6,7 @@ replicaCount: 3
 image:
   name: brianpzaide/techtrends
   tag: latest
-  pullpolicy: ifNotPresent
+  pullpolicy: IfNotPresent
 
 resources:
   requests:
