@@ -4,7 +4,7 @@ namespace:
 replicaCount: 5
 
 image:
-  name: brianpzaide/techtrends
+  repository: brianpzaide/techtrends
   tag: latest
   pullpolicy: Always
 

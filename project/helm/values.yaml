@@ -4,7 +4,7 @@ namespace:
 replicaCount: 1
 
 image:
-  name: brianpzaide/techtrends
+  repository: brianpzaide/techtrends
   tag: latest
   pullpolicy: IfNotPresent
 
