@@ -20,7 +20,7 @@ containerPort: 3111
 
 service:
   port: 7111
-  targerPort: 3111
+  targetPort: 3111
   protocol: TCP
   type: ClusterIP
 
