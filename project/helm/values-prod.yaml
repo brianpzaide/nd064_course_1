@@ -1,0 +1,31 @@
+namespace:
+  name: prod
+
+replicaCount: 5
+
+image:
+  name: brianpzaide/techtrends
+  tag: latest
+  pullpolicy: Always
+
+resources:
+  requests:
+    CPU: 350m
+    memory: 128Mi
+  limits:
+    CPU: 500m
+    memory: 256Mi
+
+containerPort: 3111
+
+service:
+  port: 7111
+  targerPort: 3111
+  protocol: TCP
+  type: ClusterIP
+
+livenessProbe:
+  path: /healthz
+
+readinessProbe:
+  path: /healthz
