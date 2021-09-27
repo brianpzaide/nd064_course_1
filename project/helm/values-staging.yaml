@@ -3,11 +3,6 @@ namespace:
 
 replicaCount: 3
 
-image:
-  repository: brianpzaide/techtrends
-  tag: latest
-  pullpolicy: IfNotPresent
-
 resources:
   requests:
     CPU: 300m
@@ -16,16 +11,5 @@ resources:
     CPU: 500m
     memory: 128Mi
 
-containerPort: 3111
-
 service:
   port: 5111
-  targetPort: 3111
-  protocol: TCP
-  type: ClusterIP
-
-livenessProbe:
-  path: /healthz
-
-readinessProbe:
-  path: /healthz

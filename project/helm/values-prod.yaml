@@ -4,8 +4,6 @@ namespace:
 replicaCount: 5
 
 image:
-  repository: brianpzaide/techtrends
-  tag: latest
   pullpolicy: Always
 
 resources:
@@ -16,16 +14,5 @@ resources:
     CPU: 500m
     memory: 256Mi
 
-containerPort: 3111
-
 service:
   port: 7111
-  targetPort: 3111
-  protocol: TCP
-  type: ClusterIP
-
-livenessProbe:
-  path: /healthz
-
-readinessProbe:
-  path: /healthz
