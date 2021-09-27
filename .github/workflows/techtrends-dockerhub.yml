@@ -38,4 +38,4 @@ jobs:
           file: ./project/Dockerfile
           platforms: linux/amd64
           push: true
-          tags: brianpzaide/techtrends:v.1.${{GITHUB_RUN_NUMBER}} 
+          tags: brianpzaide/techtrends:v.1.${{env.GITHUB_RUN_NUMBER}} 
