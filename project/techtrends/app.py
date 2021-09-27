@@ -74,14 +74,23 @@ def create():
 
 @app.route('/healthz')
 def healthcheck():
-  response = app.response_class(response=json.dumps({"result": "OK - healthy"}), status=200, mimetype="application/json")
-  return response
+  con = get_db_connection()
+  n_posts = 0
+  result = {"result": "OK - healthy"}
+  status=200
+  mimetype = "application/json"
+  try:
+    n_posts = con.execute("select count(*) from posts;").fetchone()
+  except sqlite3.OperationalError:
+    result = {"result": "ERROR - unhealthy"}
+    status=500
+    return app.response_class(response=json.dumps(result), status=500, mimetype=mimetype)
+  return app.response_class(response=json.dumps(result), status=200, mimetype=mimetype)
 
 @app.route('/metrics')
 def metrics():
-  connection = sqlite3.connect('database.db')
-  cur = connection.cursor()
-  n_posts = cur.execute("select count(*) from posts;").fetchone()
+  connection = get_db_connection()
+  n_posts = connection.execute("select count(*) from posts;").fetchone()
   connection.close()
   return app.response_class(response=json.dumps({"post_count" : n_posts[0], "db_connection_count": 1}), status=200, mimetype="application/json")
 
