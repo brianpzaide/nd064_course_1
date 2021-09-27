@@ -24,10 +24,11 @@ jobs:
         name: Docker meta
         id: meta
         uses: docker/metadata-action@v3
-        images: |
-          brianpzaide/techtrends
-        tags: |
-          type=semver, pattern={{ version }}
+        with:
+          images: |
+            brianpzaide/techtrends
+          tags: |
+            type=semver, pattern={{ version }}
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
