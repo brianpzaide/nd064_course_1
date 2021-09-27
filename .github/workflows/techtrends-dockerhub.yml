@@ -28,7 +28,6 @@ jobs:
           images: |
             brianpzaide/techtrends
           tags: |
-            type=ref ,event=branch
             type=semver ,pattern={{ version }}
       -
         name: Set up QEMU
